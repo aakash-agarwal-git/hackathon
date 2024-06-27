@@ -1,4 +1,6 @@
 const otpService = require('../services/otpService');
+const https = require('https');
+
 
 async function sendOTP(req, res) {
   try {
@@ -55,13 +57,13 @@ async function sendOTP_CommunicationService(data) {
       ...commonParameters,
       sms: {
         name: data.name,
-        templateKey: TEMPLATE_KEY.mobileOTP,
+        //templateKey: 'MobileNumberVerfication_Renewal', //TEMPLATE_KEY.mobileOTP,
         mobile: data.sendTo,
       },
     };
   
 
-  const request = this.http.post(`${communicationUrl}`, body, {
+  const request = https.post(`${communicationUrl}`, body, {
     headers: {
       'Content-Type': 'application/json',
       token: communicationToken,

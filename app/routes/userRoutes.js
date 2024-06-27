@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
-const otpController = require('../controllers/otpController');
 
 router.get('/:userId', userController.getUser);
-router.post("/", addUser);
-router.post('/sendOTP', otpController.sendOTP);
-router.post('/verifyOTP', otpController.verifyOTP);
+//router.post("/", addUser);
+router.get('/:userId/getRestrictUrl', userController.getRestrictUrl);
+router.post('/updateRestrictUrl', userController.updateRestrictUrl);
+router.get('/getCategory/:key', userController.getCategory);
 
 module.exports = router;

@@ -1,5 +1,7 @@
-const User = require("../models/userModel");
+const User = require('../models/userModel');
+const Categories = require('../models/categoryMaster');
 const { UID_CHAR, START_CHAR, END_CHAR } = require("../constants/user");
+
 
 const generateUserId = () => {
   const characters = UID_CHAR;
@@ -42,8 +44,42 @@ const getUserByDeviceId = async (deviceId) => {
   }
 };
 
+const updateUserDetails = async (userId, payload) => {
+    try {
+        return await User.findOneAndUpdate(
+            { userId },
+            { $set: payload },
+            {
+              upsert: true,
+              returnNewDocument: true,
+              returnDocument: 'after',
+            },
+          );
+    } catch (error) {
+        throw new Error('Error while creating user');
+    }
+};
+
+const getCategories = async () => {
+    try {
+        console.log('Fetching categories')
+        const categories = await Categories.find({}).toArray();
+        console.log('Categories fetched:', categories);
+        return categories;
+    } catch (error) {
+        throw new Error('Error while fetching user data');
+    }
+};
+
 module.exports = {
+<<<<<<< HEAD
   getUserById,
   createUser,
   getUserByDeviceId,
+=======
+    getUserById,
+    createUser,
+    updateUserDetails,
+    getCategories,
+>>>>>>> 754aa4b (apis)
 };
