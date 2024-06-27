@@ -74,6 +74,10 @@ const updateUserById = async (userId, updateData) => {
         if (!user) {
             return null;
         }
+        if (updateData.mobile) {
+            const { mobile } = updateData;
+            await User.findOneAndUpdate({ userId }, { mobile });
+        }
         const updatedUser = await userCategory.findOneAndUpdate(
             { userId },
             { $set: updateData },
