@@ -34,7 +34,7 @@ const getNewsFeed = async (input) => {
     const findUser = await userCategory.aggregate([
       {
         $match: {
-          userId: "refwrd",
+          userId,
         },
       },
       {
@@ -77,7 +77,7 @@ const getNewsFeed = async (input) => {
       result = await callApi(createConfig);
       articlesArray.push(result.articles);
     }
-    result = articlesArray.flat(articlesArray);
+    result = articlesArray.flat();
   }
   return result;
 };
