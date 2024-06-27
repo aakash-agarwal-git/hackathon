@@ -1,4 +1,4 @@
-const OTP = require('../models/userModel');
+const OTP = require('../models/otp');
 
 async function createOTPData(req, otpPayload) {
   try {
@@ -36,7 +36,7 @@ async function verifyOTPData(req) {
 
 async function updateOTPData(body) {
   try {
-    const response = await this.otpModel.findOneAndUpdate(
+    const response = await OTP.findOneAndUpdate(
       { userId: body.userId, mobile: body.mobile},
       { $set: { retryCount: count } },
     );

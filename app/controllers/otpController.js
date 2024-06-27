@@ -1,6 +1,7 @@
 const otpService = require('../services/otpService');
 const https = require('https');
-
+const axios = require('axios');
+const moment = require('moment');
 
 async function sendOTP(req, res) {
   try {
@@ -56,22 +57,18 @@ async function sendOTP_CommunicationService(data) {
     body = {
       ...commonParameters,
       sms: {
-        name: data.name,
-        //templateKey: 'MobileNumberVerfication_Renewal', //TEMPLATE_KEY.mobileOTP,
-        mobile: data.sendTo,
+        name: data.userId,
+        templateKey: 'MobileNumberVerfication_Renewal', //TEMPLATE_KEY.mobileOTP,
+        mobile: data.mobile,
       },
     };
-  
-
-  const request = https.post(`${communicationUrl}`, body, {
-    headers: {
-      'Content-Type': 'application/json',
-      token: communicationToken,
-      json: true,
-    },
-  });
-
-  const response = await lastValueFrom(request);
+    const response = await axios.post(`${communicationUrl}`, body, {
+      headers: {
+        'Content-Type': 'application/json',
+        token: communicationToken,
+        json: true,
+      },
+    });
   return response.data;
 }
 
@@ -80,12 +77,11 @@ async function verifyOTP(req, res) {
     if(!req.body.mobile || !req.body.otp || !req.body.userId) {
       return res.status(400).json({ message: 'Mobile or userId or otp is required' });
     }
-    const verifyOTPDbResponse = await verifyOTPData(req);
+    const verifyOTPDbResponse = await otpService.verifyOTPData(req);
       if (verifyOTPDbResponse?._id == undefined) {
         return res.status(500).json({ message: 'Failed to verify OTP' });
       }
       let count = verifyOTPDbResponse.retryCount;
-
       if (count == 0) {
         return {
           result: false,
@@ -95,7 +91,6 @@ async function verifyOTP(req, res) {
       }
       if (verifyOTPDbResponse.otp != req.body.otp) {
         count = verifyOTPDbResponse.retryCount - 1;
-        console.log(verifyOTPDbResponse);
         const updatedDocument = updateOTPData(req.body, count);
         
         if (!updatedDocument._id) {
@@ -103,26 +98,26 @@ async function verifyOTP(req, res) {
         }
         if (count == 0) {
           //this.logger.info('verify OTP', 'You have exhausted the permissible number of retries');
-          return {
+          res.json({
             result: false,
             message: 'You have exhausted the permissible number of retries',
             code: 100,
-            key,
-          };
+          });
+          
         }
         //this.logger.info('verify OTP', `You have ${count} more attempts left`);
-        return { result: false, message: `You have ${count} more attempts left`, code: 101, key };
+        res.json({ result: false, message: `You have ${count} more attempts left`, code: 101 });
       }
       const currentTime = new Date();
       const difference = moment(verifyOTPDbResponse.expiryDate).diff(currentTime);
 
       if (difference < 0) {
         //this.logger.info('verify OTP', 'The OTP has expired');
-        return { result: false, message: 'The OTP has expired', code: 102, key };
+        res.json({ result: false, message: 'The OTP has expired', code: 102 });
       }
-
       //this.logger.info('verify OTP', 'The OTP has been verified');
-      return { result: true, message: 'The OTP has been verified', code: 103, key };
+      //return { result: true, message: 'The OTP has been verified', code: 103 };
+      res.json({ success: true, message: 'The OTP has been verified', code: 103 });
     } catch (error) {
       //this.logger.error('verify OTP', 'Error in verify OTP');
       throw error;
