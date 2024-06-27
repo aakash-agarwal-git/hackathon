@@ -52,8 +52,25 @@ const getUserByDeviceId = async (deviceId) => {
   }
 };
 
+const updateUserDetails = async (userId, payload) => {
+  try {
+      return await User.findOneAndUpdate(
+          { userId },
+          { $set: payload },
+          {
+            upsert: true,
+            returnNewDocument: true,
+            returnDocument: 'after',
+          },
+        );
+  } catch (error) {
+      throw new Error('Error while creating user');
+  }
+};
+
 module.exports = {
   getUserById,
   createUser,
   getUserByDeviceId,
+  updateUserDetails
 };
