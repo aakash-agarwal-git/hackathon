@@ -30,6 +30,12 @@ const getNewsFeed = async (input) => {
       query: `from=${today}&country=in&apiKey=7f05e14c810145d9a23ad79687926a2e`,
     });
     result = await callApi(createConfig);
+  } else if (type === "ALL") {
+    createConfig = config({
+      method: "get",
+      query: `country=in&apiKey=7f05e14c810145d9a23ad79687926a2e`,
+    });
+    result = await callApi(createConfig);
   } else if (type === "FOR_YOU") {
     const findUser = await userCategory.aggregate([
       {
