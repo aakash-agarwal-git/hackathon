@@ -1,4 +1,4 @@
-const OTP = require('../models/userModel');
+const OTP = require('../models/OTP');
 
 async function createOTPData(req, otpPayload) {
   try {

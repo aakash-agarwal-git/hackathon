@@ -10,7 +10,7 @@ const otpSchema = new mongoose.Schema({
         required: true
     },
     otp: {
-        type: Array,
+        type: Number,
     },
     retryCount: {
         type: Number,
