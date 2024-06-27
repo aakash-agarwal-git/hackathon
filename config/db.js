@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-async function connectDB() {
+const connectDB = async () => {
   try {
     await mongoose.connect('mongodb://localhost:27017/Hackathon', {
       useNewUrlParser: true,
@@ -11,6 +11,6 @@ async function connectDB() {
     console.error('MongoDB connection error:', error);
     process.exit(1);
   }
-}
+};
 
-module.exports = connectDB;
+export default connectDB;
