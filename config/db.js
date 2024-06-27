@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const connectDB = async () => {
   try {
-    await mongoose.connect('mongodb://localhost:27017/Hackathon', {
+    await mongoose.connect('mongodb+srv://admin1:Ls45aaXt9qmcY5yu@mydb.viweewq.mongodb.net/?retryWrites=true&w=majority&appName=MyDB', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

@@ -8,3 +8,4 @@ export const getUserById = async (userId) => {
     throw new Error('Error while fetching user data');
   }
 };
+
