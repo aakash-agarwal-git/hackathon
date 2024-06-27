@@ -1,6 +1,4 @@
-const Fuse = require('fuse.js');
 const { getCategories } = require('../services/userService');
-const stringSimilarity = require('string-similarity');
 
 
 const getCategory = async (req, res) => {
