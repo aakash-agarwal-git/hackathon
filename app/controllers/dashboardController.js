@@ -1,6 +1,7 @@
 const { config, callApi } = require("../utils/axios");
 const moment = require("moment");
 const userCategory = require("../models/userCategoryModel");
+const { searchYouTube } = require("../utils/youtube");
 
 const findNews = async (req, res) => {
   try {
@@ -81,6 +82,26 @@ const getNewsFeed = async (input) => {
   return result;
 };
 
+const findYoutubeShorts = async (req, res) => {
+  try {
+    let result = await getYoutubeShorts(req.query);
+    return res.status(200).send({ result });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server Error" });
+  }
+};
+
+const getYoutubeShorts = async (input) => {
+  try {
+    const result = await searchYouTube(input.word);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   findNews,
+  findYoutubeShorts,
 };

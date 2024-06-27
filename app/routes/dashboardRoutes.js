@@ -6,5 +6,6 @@ const { news } = require("../validation/dashboard");
 const router = express.Router();
 
 router.post("/news", validate(news), dashboardController.findNews);
+router.get("/youtube-shorts", dashboardController.findYoutubeShorts);
 
 module.exports = router;
