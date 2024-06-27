@@ -1,9 +1,9 @@
-const userService = require('../services/userService');
+import { getUserById } from '../services/userService.js';
 
-async function getUser(req, res) {
+export const getUser = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const user = await userService.getUserById(userId);
+    const user = await getUserById(userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -12,8 +12,4 @@ async function getUser(req, res) {
     console.error(error);
     res.status(500).json({ message: 'Server Error' });
   }
-}
-
-module.exports = {
-  getUser,
 };
