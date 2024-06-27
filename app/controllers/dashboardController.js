@@ -30,17 +30,53 @@ const getNewsFeed = async (input) => {
     });
     result = await callApi(createConfig);
   } else if (type === "FOR_YOU") {
-    const findUser = await userCategory.find({ userId });
+    const findUser = await userCategory.aggregate([
+      {
+        $match: {
+          userId: "refwrd",
+        },
+      },
+      {
+        $group: {
+          _id: "$categoryId",
+          data: {
+            $first: "$$ROOT",
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "categorymasters",
+          let: { categoryId: "$data.categoryId" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ["$_id", "$$categoryId"],
+                },
+              },
+            },
+          ],
+          as: "result",
+        },
+      },
+      {
+        $unwind: {
+          path: "$result",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+    ]);
     const articlesArray = [];
-    findUser.map(async (el) => {
+    for (let i = 0; i < findUser.length; i++) {
       createConfig = config({
         method: "get",
-        query: `category=${el.name}&country=in&apiKey=7f05e14c810145d9a23ad79687926a2e`,
+        query: `category=${findUser[i].result.name}&country=in&apiKey=7f05e14c810145d9a23ad79687926a2e`,
       });
       result = await callApi(createConfig);
-      articlesArray.push(result);
-    });
-    result = articlesArray;
+      articlesArray.push(result.articles);
+    }
+    result = articlesArray.flat(articlesArray);
   }
   return result;
 };
