@@ -1,10 +1,10 @@
-import express from 'express';
-import { getUser } from '../controllers/userController.js';
-import { sendPushNotification } from '../services/pushNotification';
+const express = require("express");
+const { getUser, addUser } = require("../controllers/userController");
 
 const router = express.Router();
 
-router.get('/:userId', getUser);
+router.get("/:userId", getUser);
+router.post("/", addUser);
 
 router.get('/test', async (req, res) => {
     try {
@@ -23,4 +23,4 @@ router.get('/test', async (req, res) => {
     }
   });
 
-export default router;
+module.exports = router;
