@@ -1,5 +1,4 @@
-const Fuse = require('fuse.js');
-const { getUserById, createUser, updateUserDetails, getCategories, getUserByDeviceId } = require('../services/userService');
+const { getUserById, createUser, updateUserDetails, getUserByDeviceId } = require('../services/userService');
 
 const getUser = async (req, res) => {
   try {
@@ -81,35 +80,9 @@ const updateRestrictUrl = async (req, res) => {
   }
 };
 
-const getCategory = async (req, res) => {
-  try {
-    const key = req.params.key;
-    const categories = await getCategories();
-    if (!categories) {
-      return res.status(404).json({ message: 'Categories not found' });
-    }
-    getTopFuzzyMatches(key, categories);
-    res.json(user.restrictSource);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server Error' });
-  }
-};
-
-async function getTopFuzzyMatches(input, categories) {
-  const fuse = new Fuse(categories, {
-    keys: ['name'], // Search in the 'name' field
-    threshold: 0.3, // Adjust the threshold for sensitivity
-  });
-
-  // Perform the fuzzy search
-  const result = fuse.search(input, { limit: 5 });
-  return result.map(r => r.item.name);
-}
 module.exports = {
   getUser,
   addUser,
   getRestrictUrl,
   updateRestrictUrl,
-  getCategory,
 };

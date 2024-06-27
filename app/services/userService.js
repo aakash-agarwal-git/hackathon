@@ -1,5 +1,5 @@
 const User = require('../models/userModel');
-const Categories = require('../models/categoryMaster');
+const categoryMaster = require('../models/categoryMaster');
 const { UID_CHAR, START_CHAR, END_CHAR } = require("../constants/user");
 
 
@@ -63,7 +63,7 @@ const updateUserDetails = async (userId, payload) => {
 const getCategories = async () => {
     try {
         console.log('Fetching categories')
-        const categories = await Categories.find({}).toArray();
+        const categories = await categoryMaster.find({});
         console.log('Categories fetched:', categories);
         return categories;
     } catch (error) {
@@ -72,14 +72,8 @@ const getCategories = async () => {
 };
 
 module.exports = {
-<<<<<<< HEAD
-  getUserById,
-  createUser,
-  getUserByDeviceId,
-=======
     getUserById,
     createUser,
     updateUserDetails,
     getCategories,
->>>>>>> 754aa4b (apis)
 };
