@@ -1,7 +1,8 @@
-import admin from "firebase-admin";
-import { errorLogger, infoLogger } from "../utility/log";
+const  admin = require("firebase-admin");
+const { errorLogger, infoLogger } = require("../utility/log");
 
-const serviceAccount = JSON.parse(process.env.firebaseConfig);
+console.log("ENV", process.env)
+const serviceAccount = JSON.parse(process.env.FirebaseConfig);
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
@@ -110,4 +111,4 @@ const sendPushNotification = async (data) => {
   }
 };
 
-export { sendPushNotification };
+module.exports = sendPushNotification;

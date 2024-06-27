@@ -1,4 +1,4 @@
-import logger from "./logger";
+const  logger = require("./logger");
 
 const infoLogger = (method, message = "", data = "") => {
     try {
@@ -26,4 +26,4 @@ const errorLogger = (method, message = "", data = "") => {
     }
 };
 
-export { infoLogger, errorLogger };
+module.exports =  { infoLogger, errorLogger };

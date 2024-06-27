@@ -1,7 +1,7 @@
-import winston, { format } from "winston";
+const  winston = require ("winston");
 
 
-const myFormat = format.printf((message, level, timestamp) => {
+const myFormat =  winston.format.printf((message, level, timestamp) => {
     if (message && message.isAxiosError) {
         message = {
             request: {
@@ -45,4 +45,4 @@ logger.stream = {
     }
 };
 
-export default logger;
+module.exports = logger;
