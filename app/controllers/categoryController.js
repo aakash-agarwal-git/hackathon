@@ -10,7 +10,7 @@ const getCategory = async (req, res) => {
     }
     const fuzzyMatches = getTopFuzzyMatches(key, categories);
     console.log("fuzzyMatches", fuzzyMatches);
-    res.json(fuzzyMatches);
+    return res.status(200).json({fuzzyMatches});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
