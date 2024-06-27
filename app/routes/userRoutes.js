@@ -1,10 +1,9 @@
 const express = require('express');
-const router = express.Router();
-const userController = require('../controllers/userController');
+const { getUser, addUser } = require('../controllers/userController');
 
-router.get('/:userId', userController.getUser);
-router.post("/", userController.addUser);
-router.get('/:userId/getRestrictUrl', userController.getRestrictUrl);
-router.post('/updateRestrictUrl', userController.updateRestrictUrl);
+const router = express.Router();
+
+router.get('/:userId', getUser);
+router.post('/', addUser);
 
 module.exports = router;

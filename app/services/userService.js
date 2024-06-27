@@ -1,7 +1,6 @@
-const User = require('../models/userModel');
-const categoryMaster = require('../models/categoryMaster');
+const User = require("../models/userModel");
+const userCategory = require("../models/userCategoryModel");
 const { UID_CHAR, START_CHAR, END_CHAR } = require("../constants/user");
-
 
 const generateUserId = () => {
   const characters = UID_CHAR;
@@ -38,42 +37,23 @@ const getUserById = async (userId) => {
 const getUserByDeviceId = async (deviceId) => {
   try {
     const user = await User.findOne({ deviceId });
+    if (user) {
+      const { userId } = user;
+      const res = await userCategory.find({ userId });
+      if (res) {
+        const result = { user, res };
+        return result;
+      }
+      return user;
+    }
     return user;
   } catch (error) {
     throw new Error("Error while fetching user by deviceId");
   }
 };
 
-const updateUserDetails = async (userId, payload) => {
-    try {
-        return await User.findOneAndUpdate(
-            { userId },
-            { $set: payload },
-            {
-              upsert: true,
-              returnNewDocument: true,
-              returnDocument: 'after',
-            },
-          );
-    } catch (error) {
-        throw new Error('Error while creating user');
-    }
-};
-
-const getCategories = async () => {
-    try {
-        console.log('Fetching categories')
-        const categories = await categoryMaster.find({});
-        console.log('Categories fetched:', categories);
-        return categories;
-    } catch (error) {
-        throw new Error('Error while fetching user data');
-    }
-};
-
 module.exports = {
-    getUserById,
-    createUser,
-    updateUserDetails,
-    getCategories,
+  getUserById,
+  createUser,
+  getUserByDeviceId,
 };
