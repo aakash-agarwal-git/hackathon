@@ -1,7 +1,6 @@
 const  admin = require("firebase-admin");
 const { errorLogger, infoLogger } = require("../utility/log");
 
-console.log("ENV", process.env)
 const serviceAccount = JSON.parse(process.env.FirebaseConfig);
 
 // Initialize Firebase Admin SDK
