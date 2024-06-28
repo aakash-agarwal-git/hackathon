@@ -9,9 +9,9 @@ const categoryMasterSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    subCategoryId: {
+    subCategory: {
         type: Array,
     }
 });
 
-module.exports = mongoose.model("categoryMasterSchema", categoryMasterSchema);
+module.exports = mongoose.model("categoryMaster", categoryMasterSchema);

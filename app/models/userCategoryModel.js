@@ -1,23 +1,27 @@
+const { required } = require("joi");
 const mongoose = require("mongoose");
 
 const userCategorySchema = new mongoose.Schema({
     userId: {
         type: String,
-        required: true
+        required: true,
     },
     name: {
         type: String,
-        required: true
+        required: true,
     },
     expiry: {
         type: Date,
     },
     preferredTime: {
-        type: Date
+        type: Date,
     },
     smsOpted: {
-        type: Boolean
-    }
+        type: Boolean,
+    },
+    categories: {
+        type: Array,
+    },
 });
 
 module.exports = mongoose.model("userCategory", userCategorySchema);

@@ -1,6 +1,12 @@
 const express = require("express");
-const { getUser, addUser } = require("../controllers/userController");
 const sendPushNotification  =  require("../services/pushNotification")
+const {
+    getUser,
+    addUser,
+    getRestrictUrl,
+    updateRestrictUrl,
+    updateUser,
+} = require("../controllers/userController");
 
 const router = express.Router();
 
@@ -23,6 +29,9 @@ router.get('/test', async (req, res) => {
 
 router.get("/:userId", getUser);
 router.post("/", addUser);
+router.get("/:userId/getRestrictUrl", getRestrictUrl);
+router.post("/updateRestrictUrl", updateRestrictUrl);
+router.put("/:userId", updateUser);
 
 
 
