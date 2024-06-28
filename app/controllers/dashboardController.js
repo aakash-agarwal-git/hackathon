@@ -85,6 +85,11 @@ const getNewsFeed = async (input) => {
         articlesArray.push(result.articles);
       }
       result = articlesArray.flat();
+      result = {
+        status: "ok",
+        totalResults: result.length,
+        articles: result,
+      };
     }
   }
   return result;
