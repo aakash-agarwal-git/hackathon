@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const connectDB = require("../config/db");
-const userRoutes = require("./routes/");
+const routes = require("./routes/");
 const scheduler = require("./cron/index");
 
 const app = express();
@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 connectDB();
 scheduler.scheduleCronJob();
 // Routes
-app.use("/api", userRoutes);
+app.use("/api", routes);
 
 // Start server
 app.listen(PORT, () => {
