@@ -7,5 +7,6 @@ const router = express.Router();
 
 router.post("/news", validate(news), dashboardController.findNews);
 router.get("/youtube-shorts", dashboardController.findYoutubeShorts);
+router.post("/news-search", dashboardController.getNewsBasedOnSearch);
 
 module.exports = router;

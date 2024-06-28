@@ -2,6 +2,7 @@ const { config, callApi } = require("../utils/axios");
 const moment = require("moment");
 const userCategory = require("../models/userCategoryModel");
 const { searchYouTube } = require("../utils/youtube");
+const axios = require("axios");
 
 const findNews = async (req, res) => {
   try {
@@ -114,7 +115,21 @@ const getYoutubeShorts = async (input) => {
   }
 };
 
+const getNewsBasedOnSearch = async (req, res) => {
+  try {
+    const url = `https://gnews.io/api/v4/search?q=${req.body.sentence}&token=${process.env.SEARCH_ENGINE_TOKEN}`;
+  const response = await axios.get(url);
+  const data = response.data.articles;
+  return res.status(200).send({ data });
+}
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+}
+
 module.exports = {
   findNews,
   findYoutubeShorts,
+  getNewsBasedOnSearch
 };
