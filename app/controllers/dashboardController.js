@@ -75,15 +75,17 @@ const getNewsFeed = async (input) => {
       },
     ]);
     const articlesArray = [];
-    for (let i = 0; i < findUser.length; i++) {
-      createConfig = config({
-        method: "get",
-        query: `category=${findUser[i].result.name}&country=in&apiKey=7f05e14c810145d9a23ad79687926a2e`,
-      });
-      result = await callApi(createConfig);
-      articlesArray.push(result.articles);
+    if (findUser.length) {
+      for (let i = 0; i < findUser.length; i++) {
+        createConfig = config({
+          method: "get",
+          query: `category=${findUser[i].result.name}&country=in&apiKey=7f05e14c810145d9a23ad79687926a2e`,
+        });
+        result = await callApi(createConfig);
+        articlesArray.push(result.articles);
+      }
+      result = articlesArray.flat();
     }
-    result = articlesArray.flat();
   }
   return result;
 };

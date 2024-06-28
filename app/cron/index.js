@@ -19,11 +19,13 @@ function scheduleCronJob() {
         { _id: 1 }
       );
       console.log("🚀 ~ cron.schedule ~ findCategories:", findCategories);
-      const categoryIds = findCategories.map((el) => el._id);
-      //   const deleteData = await userCategory.deleteMany({
-      //     _id: { $in: categoryIds },
-      //   });
-      //   console.log("🚀 ~ cron.schedule ~ deleteData:", deleteData);
+      if (findCategories.length) {
+        const categoryIds = findCategories.map((el) => el._id);
+        const deleteData = await userCategory.deleteMany({
+          _id: { $in: categoryIds },
+        });
+        console.log("🚀 ~ cron.schedule ~ deleteData:", deleteData);
+      }
     } catch (error) {
       console.log("🚀 ~ cron.schedule ~ error:", error);
     }
@@ -72,15 +74,18 @@ function scheduleCronJob() {
       ]);
       console.log("🚀 ~ cron.schedule ~ findCategories:", findCategories);
       const articlesArray = [];
-      for (let i = 0; i < findCategories.length; i++) {
-        const createConfig = config({
-          method: "get",
-          query: `category=${findCategories[i].result.name}&country=in&apiKey=7f05e14c810145d9a23ad79687926a2e`,
-        });
-        result = await callApi(createConfig);
-        articlesArray.push(result.articles[0]);
+      if (findCategories.length) {
+        for (let i = 0; i < findCategories.length; i++) {
+          const createConfig = config({
+            method: "get",
+            query: `category=${findCategories[i].result.name}&country=in&apiKey=7f05e14c810145d9a23ad79687926a2e`,
+          });
+          result = await callApi(createConfig);
+          articlesArray.push(result.articles[0]);
+        }
+        result = articlesArray.flat();
       }
-      result = articlesArray.flat();
+
       console.log("🚀 ~ cron.schedule ~ articlesArray:", articlesArray);
       console.log("🚀 ~ cron.schedule ~ result:", result);
     } catch (error) {
@@ -170,15 +175,18 @@ function scheduleCronJob() {
         JSON.stringify(findCategories)
       );
       const articlesArray = [];
-      for (let i = 0; i < findCategories.length; i++) {
-        const createConfig = config({
-          method: "get",
-          query: `category=${findCategories[i].categoriesResult.name}&country=in&apiKey=7f05e14c810145d9a23ad79687926a2e`,
-        });
-        result = await callApi(createConfig);
-        articlesArray.push(result.articles[0]);
+      if (findCategories.length) {
+        for (let i = 0; i < findCategories.length; i++) {
+          const createConfig = config({
+            method: "get",
+            query: `category=${findCategories[i].categoriesResult.name}&country=in&apiKey=7f05e14c810145d9a23ad79687926a2e`,
+          });
+          result = await callApi(createConfig);
+          articlesArray.push(result.articles[0]);
+        }
+        result = articlesArray.flat();
       }
-      result = articlesArray.flat();
+
       console.log("🚀 ~ cron.schedule ~ articlesArray:", articlesArray);
       console.log("🚀 ~ cron.schedule ~ result:", result);
     } catch (error) {
